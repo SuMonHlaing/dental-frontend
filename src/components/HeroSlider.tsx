@@ -50,9 +50,6 @@ const HeroSlider = () => {
             <div className="text-center text-white">
               <h1 className="text-5xl font-bold mb-4">{slide.title}</h1>
               <p className="text-xl">{slide.description}</p>
-              <button className="mt-8 bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition duration-200">
-                Book Now
-              </button>
             </div>
           </div>
         </div>

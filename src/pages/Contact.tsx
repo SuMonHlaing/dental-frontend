@@ -22,7 +22,7 @@ const Contact = () => {
       {/* Hero Section */}
       <div className="relative h-[400px]">
         <img
-          src="https://images.unsplash.com/photo-1629909615184-74c6646bd769?auto=format&fit=crop&q=80&w=1920"
+          src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=1920"
           alt="Contact Us"
           className="w-full h-full object-cover"
         />

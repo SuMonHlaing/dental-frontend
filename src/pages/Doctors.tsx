@@ -117,7 +117,7 @@ const Doctors = () => {
 
                 <div className="flex items-center space-x-2 mb-4">
                   <Award className="h-5 w-5 text-gray-400" />
-                  <span className="text-gray-600">{doctor.location}</span>
+                  <span className="text-gray-600">{doctor.certifications}</span>
                 </div>
 
                 <div className="flex items-center space-x-2 mb-4">
