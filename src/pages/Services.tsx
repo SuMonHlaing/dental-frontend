@@ -82,7 +82,11 @@ const Services = () => {
               <h3 className="text-xl font-semibold mb-2 text-gray-800">
                 {service.name}
               </h3>
-              <p className="text-gray-600 mb-4">{service.description}</p>
+              <p className="text-gray-600 mb-4">
+                {service.description.length > 200
+                  ? `${service.description.slice(0, 200)}...`
+                  : service.description}
+              </p>
               <button
                 className="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200"
                 onClick={(e) => {

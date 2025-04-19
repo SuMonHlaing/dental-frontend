@@ -94,7 +94,7 @@ const Doctors = () => {
                 <img
                   src={doctor.image}
                   alt={doctor.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-t-lg"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
                   <h3 className="text-xl font-semibold text-white">
@@ -105,11 +105,6 @@ const Doctors = () => {
               </div>
 
               <div className="p-6">
-                {/* <div className="flex items-center space-x-2 mb-2">
-                  <Star className="h-5 w-5 text-yellow-400" />
-                  <span className="text-gray-600">{doctor.experience}</span>
-                </div> */}
-
                 <div className="flex items-center space-x-2 mb-4">
                   <Clock className="h-5 w-5 text-gray-400" />
                   <span className="text-gray-600">{doctor.experience}</span>
