@@ -65,7 +65,11 @@ const ServiceGrid = () => {
                 <img src={service.icon} alt={service.title} className="h-6 w-6 text-blue-600" /> {/* Assuming the API provides an icon URL */}
               </div>
               <h3 className="text-lg md:text-xl font-semibold mb-2 text-gray-800">{service.title}</h3>
-              <p className="text-sm md:text-base text-gray-600">{service.description}</p>
+              <p className="text-gray-600 mb-4">
+                {service.description.length > 200
+                  ? `${service.description.slice(0, 200)}...`
+                  : service.description}
+              </p>
             </div>
           ))}
         </div>
