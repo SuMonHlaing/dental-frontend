@@ -66,8 +66,8 @@ const ServiceGrid = () => {
               </div>
               <h3 className="text-lg md:text-xl font-semibold mb-2 text-gray-800">{service.title}</h3>
               <p className="text-gray-600 mb-4">
-                {service.description.length > 200
-                  ? `${service.description.slice(0, 200)}...`
+                {service.description.length > 80
+                  ? `${service.description.slice(0, 80)}...`
                   : service.description}
               </p>
             </div>

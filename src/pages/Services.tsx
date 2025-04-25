@@ -83,8 +83,8 @@ const Services = () => {
                 {service.name}
               </h3>
               <p className="text-gray-600 mb-4">
-                {service.description.length > 200
-                  ? `${service.description.slice(0, 200)}...`
+                {service.description.length > 80
+                  ? `${service.description.slice(0, 80)}...`
                   : service.description}
               </p>
               <button
