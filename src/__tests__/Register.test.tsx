@@ -10,6 +10,12 @@ jest.mock('../store/authStore');
 const mockRegister = jest.fn();
 const mockNavigate = jest.fn();
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+  Link: jest.fn().mockImplementation(({ children }) => children),
+}));
+
 describe('Register Component', () => {
   beforeEach(() => {
     (useAuthStore as unknown as jest.Mock).mockImplementation(() => ({
@@ -99,6 +105,7 @@ describe('Register Component', () => {
   });
 
   it('shows loading state during form submission', async () => {
+    jest.useFakeTimers();
     mockRegister.mockImplementationOnce(
       () => new Promise((resolve) => setTimeout(resolve, 1000))
     );
@@ -117,8 +124,14 @@ describe('Register Component', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Create account' }));
 
     expect(screen.getByText('Creating account...')).toBeInTheDocument();
+
+    // Advance timers so the promise resolves
+    jest.runAllTimers();
+
     await waitFor(() => {
       expect(screen.queryByText('Creating account...')).not.toBeInTheDocument();
     });
+
+    jest.useRealTimers();
   });
 });

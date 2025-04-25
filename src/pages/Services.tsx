@@ -55,15 +55,51 @@ const Services = () => {
 
   return (
     <div className="pt-16 bg-gray-50">
+         {/* Hero Section */}
+         <div className="relative h-[500px]">
+        <img
+          src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=1920"
+          alt="Our Services"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white">
+            <h1 className="text-4xl font-bold mb-4">Our Services</h1>
+            <p className="text-xl text-center px-4 md:px-0">
+              {[
+                "We offer a comprehensive range of dental services to meet all your oral health needs.",
+                "Our experienced team uses the latest technology to provide you with the best care possible.",
+              ].map((line, lineIndex) => (
+                <span key={lineIndex} className="block mb-2">
+                  {Array.from(line).map((char, charIndex) => (
+                    <span
+                      key={charIndex}
+                      style={{
+                        animation: `fadeIn 0.05s ease-in-out ${(lineIndex * 100 + charIndex) * 0.05}s forwards`,
+                        opacity: 0,
+                      }}
+                      className="inline-block"
+                    >
+                      {char === " " ? "\u00A0" : char}
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </p>
+            <style>
+              {`
+              @keyframes fadeIn {
+                to {
+                  opacity: 1;
+                }
+              }
+              `}
+            </style>
+          </div>
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold text-center mb-4 text-gray-800">
-          Our Services
-        </h1>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          We offer a comprehensive range of dental services to meet all your
-          oral health needs. Our experienced team uses the latest technology to
-          provide you with the best care possible.
-        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (

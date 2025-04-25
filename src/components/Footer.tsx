@@ -62,7 +62,11 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p className="text-sm md:text-base text-gray-400">&copy; {new Date().getFullYear()} DentalCare. All rights reserved.</p>
+          <p className="text-sm md:text-base text-gray-400">&copy; {new Date().getFullYear()} DentalCare. All rights reserved.
+            <div className="text-sm md:text-base text-gray-400">  
+              Powered by Su Mon Hlaing
+          </div>
+          </p>
         </div>
       </div>
     </footer>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import { Calendar, Clock, Phone, Mail, MapPin, Award } from "lucide-react";
 import BookingModal from "../components/BookingModal";
 
 interface Doctor {

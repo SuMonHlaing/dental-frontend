@@ -67,7 +67,12 @@ const Doctors = () => {
   return (
     <div className="pt-16 bg-gray-50">
       {/* Hero Section */}
-      <div className="relative h-[300px] bg-gradient-to-r from-blue-600 to-blue-800">
+      <div className="relative h-[500px] bg-gradient-to-r from-blue-600 to-blue-800">
+      <img
+          src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=1920"
+          alt="Contact Us"
+          className="w-full h-full object-cover"
+        />
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white">
