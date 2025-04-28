@@ -14,6 +14,7 @@ interface Doctor {
   working_hours: string;
   certifications: string;
   about: string;
+  appointments_count: number;
 }
 
 const DoctorDetail = () => {
@@ -99,9 +100,14 @@ const DoctorDetail = () => {
               <p className="text-xl text-blue-100 mb-2">{doctor.experience}</p>
               <button
                 onClick={() => setIsBookingOpen(true)}
-                className="bg-white text-blue-600 px-6 py-3 rounded-md hover:bg-blue-50 transition duration-200"
+                disabled={doctor.appointments_count > 10}
+                className={`px-6 py-3 rounded-md transition duration-200 
+                  ${doctor.appointments_count > 10 
+                    ? 'bg-gray-400 text-gray-700 cursor-not-allowed' 
+                    : 'bg-white text-blue-600 hover:bg-blue-50'
+                  }`}
               >
-                Book Appointment
+                {doctor.appointments_count > 10 ? "Fully Booked" : "Book Appointment"}
               </button>
             </div>
             <div className="hidden md:block">

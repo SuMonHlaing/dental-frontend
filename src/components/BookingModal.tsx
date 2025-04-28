@@ -31,6 +31,52 @@ const BookingModal: React.FC<BookingModalProps> = ({
     null
   );
 
+  const today = new Date().toISOString().split("T")[0];
+
+  // Helper to check if a date is Sunday
+  const isSunday = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.getDay() === 0;
+  };
+
+  // Helper to check if a date is Saturday
+  const isSaturday = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.getDay() === 6;
+  };
+
+  // Helper to check if a time is within allowed range
+  const isTimeAllowed = (dateStr: string, timeStr: string) => {
+    if (!dateStr || !timeStr) return false;
+    const [hour, minute] = timeStr.split(":").map(Number);
+    const totalMinutes = hour * 60 + minute;
+    if (isSaturday(dateStr)) {
+      // Saturday: 09:00 - 14:00
+      return totalMinutes >= 9 * 60 && totalMinutes <= 14 * 60;
+    } else {
+      // Mon-Fri: 09:00 - 18:00
+      return totalMinutes >= 9 * 60 && totalMinutes <= 18 * 60;
+    }
+  };
+
+  // Set min/max time based on selected date
+  let minTime = "09:00";
+  let maxTime = "18:00";
+  if (formData.date && isSaturday(formData.date)) {
+    maxTime = "14:00";
+  }
+
+  // Prevent form submission if Sunday is selected
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (isSunday(value)) {
+      alert("We are closed on Sundays. Please select another date.");
+      setFormData({ ...formData, date: "" });
+    } else {
+      setFormData({ ...formData, date: value, time: "" }); // reset time if date changes
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -38,6 +84,13 @@ const BookingModal: React.FC<BookingModalProps> = ({
 
     if (!token) {
       alert("You must be logged in to book an appointment.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Extra validation for time
+    if (!isTimeAllowed(formData.date, formData.time)) {
+      alert("Please select a valid time within working hours.");
       setIsSubmitting(false);
       return;
     }
@@ -84,6 +137,17 @@ const BookingModal: React.FC<BookingModalProps> = ({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const getAvailableTimes = () => {
+    const times = [];
+    const start = isSaturday(formData.date) ? 9 : 9;
+    const end = isSaturday(formData.date) ? 14 : 18;
+    for (let hour = start; hour <= end; hour++) {
+      times.push(`${hour.toString().padStart(2, "0")}:00`);
+      times.push(`${hour.toString().padStart(2, "0")}:30`);
+    }
+    return times;
   };
 
   if (!isOpen) return null;
@@ -184,13 +248,15 @@ const BookingModal: React.FC<BookingModalProps> = ({
                   type="date"
                   id="date"
                   required
+                  min={today} // <-- Prevent selecting previous dates
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={formData.date}
-                  onChange={(e) =>
-                    setFormData({ ...formData, date: e.target.value })
-                  }
+                  onChange={handleDateChange}
                 />
               </div>
+              <span className="text-xs text-gray-500 block mt-1">
+                (Closed on Sundays)
+              </span>
             </div>
 
             <div>
@@ -202,17 +268,29 @@ const BookingModal: React.FC<BookingModalProps> = ({
               </label>
               <div className="relative">
                 <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <input
-                  type="time"
+                <select
                   id="time"
                   required
+                  disabled={!formData.date || getAvailableTimes().length === 0}
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={formData.time}
                   onChange={(e) =>
                     setFormData({ ...formData, time: e.target.value })
                   }
-                />
+                >
+                  <option value="">Select a time</option>
+                  {getAvailableTimes().map((time) => (
+                    <option key={time} value={time}>
+                      {time}
+                    </option>
+                  ))}
+                </select>
               </div>
+              <span className="text-xs text-gray-500 block mt-1">
+                {formData.date && isSaturday(formData.date)
+                  ? "Saturday: 9am - 2pm"
+                  : "Monday - Friday: 9am - 6pm"}
+              </span>
             </div>
           </div>
 

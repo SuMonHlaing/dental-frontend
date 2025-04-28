@@ -14,6 +14,7 @@ interface Doctor {
   working_hours: string;
   certifications: string;
   about: string;
+  appointments_count: number;
 }
 
 const Doctors = () => {
@@ -33,7 +34,7 @@ const Doctors = () => {
           throw new Error("Failed to fetch doctors");
         }
         const data = await response.json();
-        setDoctors(data.data); // Update state with the fetched doctor list
+        setDoctors(data.doctor); // <-- Use "doctor" here (based on your API)
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -68,9 +69,9 @@ const Doctors = () => {
     <div className="pt-16 bg-gray-50">
       {/* Hero Section */}
       <div className="relative h-[500px] bg-gradient-to-r from-blue-600 to-blue-800">
-      <img
+        <img
           src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=1920"
-          alt="Contact Us"
+          alt="Doctors"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/30" />
@@ -126,21 +127,29 @@ const Doctors = () => {
                 </div>
 
                 <div className="flex space-x-4">
+                  {/* View Profile Button */}
                   <button
                     onClick={() => navigate(`/doctors/${doctor.id}`)}
                     className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition duration-200"
                   >
                     View Profile
                   </button>
+
+                  {/* Book Now Button */}
                   <button
                     onClick={() => {
                       setSelectedDoctor(doctor.name);
                       setSelectedDoctorId(doctor.id);
                       setIsBookingOpen(true);
                     }}
-                    className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200"
+                    disabled={doctor.appointments_count > 10}
+                    className={`flex-1 px-4 py-2 rounded-md transition duration-200 ${
+                      doctor.appointments_count > 10
+                        ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                        : "bg-blue-600 text-white hover:bg-blue-700"
+                    }`}
                   >
-                    Book Now
+                    {doctor.appointments_count > 10 ? "Fully Booked" : "Book Now"}
                   </button>
                 </div>
               </div>
@@ -149,6 +158,7 @@ const Doctors = () => {
         </div>
       </div>
 
+      {/* Booking Modal */}
       <BookingModal
         isOpen={isBookingOpen}
         doctorId={selectedDoctorId ?? 0}

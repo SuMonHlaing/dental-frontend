@@ -7,6 +7,7 @@ interface Doctor {
   specialty: string;
   image: string;
   experience: string;
+  appointments_count: number;
 }
 
 const DoctorList = () => {
@@ -20,15 +21,12 @@ const DoctorList = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await fetch(
-          "http://127.0.0.1:8000/api/popular/doctors"
-        );
+        const response = await fetch("http://127.0.0.1:8000/api/popular/doctors");
         if (!response.ok) {
           throw new Error("Failed to fetch popular doctors");
         }
-
         const data = await response.json();
-        setDoctors(data.data); // Assuming the API response contains a "doctors" array
+        setDoctors(data.doctor); // <-- updated to 'doctor'
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message || "An error occurred while fetching doctors");
@@ -84,9 +82,13 @@ const DoctorList = () => {
                     setSelectedDoctorId(doctor.id);
                     setIsBookingOpen(true);
                   }}
-                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200"
+                  disabled={doctor.appointments_count > 10}
+                  className={`mt-4 w-full px-4 py-2 rounded-md transition duration-200 
+                    ${doctor.appointments_count > 10 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
                 >
-                  Book Now
+                  {doctor.appointments_count > 10 ? "Fully Booked" : "Book Now"}
                 </button>
               </div>
             </div>
