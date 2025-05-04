@@ -100,14 +100,9 @@ const DoctorDetail = () => {
               <p className="text-xl text-blue-100 mb-2">{doctor.experience}</p>
               <button
                 onClick={() => setIsBookingOpen(true)}
-                disabled={doctor.appointments_count > 10}
-                className={`px-6 py-3 rounded-md transition duration-200 
-                  ${doctor.appointments_count > 10 
-                    ? 'bg-gray-400 text-gray-700 cursor-not-allowed' 
-                    : 'bg-white text-blue-600 hover:bg-blue-50'
-                  }`}
+                className="px-6 py-3 rounded-md transition duration-200 bg-white text-blue-600 hover:bg-blue-50"
               >
-                {doctor.appointments_count > 10 ? "Fully Booked" : "Book Appointment"}
+                Book Appointment
               </button>
             </div>
             <div className="hidden md:block">

@@ -30,6 +30,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
     null
   );
+  const [apiMessage, setApiMessage] = useState<string | null>(null);
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -113,11 +114,16 @@ const BookingModal: React.FC<BookingModalProps> = ({
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to book appointment");
+        setApiMessage(data.message || "Failed to book appointment");
+        setSubmitStatus("error");
+        setIsSubmitting(false);
+        return;
       }
 
+      setApiMessage(data.message || "Appointment booked successfully!");
       setSubmitStatus("success");
       setFormData({
         name: "",
@@ -130,9 +136,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
       setTimeout(() => {
         onClose();
         setSubmitStatus(null);
+        setApiMessage(null);
       }, 2000);
     } catch (error) {
-      console.error("Error submitting appointment:", error);
+      setApiMessage("Failed to book appointment. Please try again.");
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -312,15 +319,15 @@ const BookingModal: React.FC<BookingModalProps> = ({
             />
           </div>
 
-          {submitStatus === "success" && (
-            <div className="text-green-600 text-sm">
-              Appointment booked successfully!
-            </div>
-          )}
+         
 
-          {submitStatus === "error" && (
-            <div className="text-red-600 text-sm">
-              Failed to book appointment. Please try again.
+          {apiMessage && (
+            <div
+              className={`text-sm mt-2 ${
+                submitStatus === "success" ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {apiMessage}
             </div>
           )}
 

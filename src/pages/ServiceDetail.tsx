@@ -146,20 +146,13 @@ const ServiceDetail = () => {
                   <p className="text-blue-600 mb-2">{doctor.experience}</p>
                   <p className="text-gray-600">{doctor.location}</p>
                   <button
-                    disabled={doctor.appointments_count > 10}
-                    className={`mt-4 w-full px-4 py-2 rounded-md transition duration-200 
-                      ${doctor.appointments_count > 10 
-                        ? 'bg-gray-400 cursor-not-allowed text-gray-700' 
-                        : 'bg-blue-600 hover:bg-blue-700 text-white'
-                      }`}
+                    className="mt-4 w-full px-4 py-2 rounded-md transition duration-200 bg-blue-600 hover:bg-blue-700 text-white"
                     onClick={() => {
                       setSelectedDoctor(doctor);
                       setIsBookingOpen(true);
                     }}
                   >
-                    {doctor.appointments_count > 10
-                      ? "Fully Booked"
-                      : `Book with ${doctor.name.split(" ")[0]}`}
+                    {`Book with ${doctor.name.split(" ")[0]}`}
                   </button>
                 </div>
               </div>

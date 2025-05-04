@@ -142,14 +142,9 @@ const Doctors = () => {
                       setSelectedDoctorId(doctor.id);
                       setIsBookingOpen(true);
                     }}
-                    disabled={doctor.appointments_count > 10}
-                    className={`flex-1 px-4 py-2 rounded-md transition duration-200 ${
-                      doctor.appointments_count > 10
-                        ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                        : "bg-blue-600 text-white hover:bg-blue-700"
-                    }`}
+                    className="flex-1 px-4 py-2 rounded-md transition duration-200 bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    {doctor.appointments_count > 10 ? "Fully Booked" : "Book Now"}
+                    Book Now
                   </button>
                 </div>
               </div>
