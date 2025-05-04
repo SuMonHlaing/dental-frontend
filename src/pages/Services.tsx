@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Search } from "lucide-react"; // Add this import at the top with your other imports
 
 interface Service {
   id: number;
@@ -13,6 +14,7 @@ const Services = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [search, setSearch] = useState(""); // <-- Add search state
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -36,6 +38,12 @@ const Services = () => {
 
     fetchServices();
   }, []);
+
+  // Filter services based on search
+  const filteredServices = services.filter((service) =>
+    service.name.toLowerCase().includes(search.toLowerCase()) ||
+    service.description.toLowerCase().includes(search.toLowerCase())
+  );
 
   if (isLoading) {
     return (
@@ -100,9 +108,28 @@ const Services = () => {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 py-16">
-
+        {/* Search input */}
+        <div className="mb-8 flex justify-center">
+          <div className="relative w-full max-w-md">
+            <input
+              type="text"
+              placeholder="Search services..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-4 py-2 pl-10"
+            />
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+              <Search className="h-5 w-5" />
+            </span>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service) => (
+          {filteredServices.length === 0 && (
+            <div className="col-span-full text-center text-gray-500">
+              No services found.
+            </div>
+          )}
+          {filteredServices.map((service) => (
             <div
               key={service.id}
               className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"

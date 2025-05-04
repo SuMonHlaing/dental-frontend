@@ -84,7 +84,8 @@ const BookingModal: React.FC<BookingModalProps> = ({
     setSubmitStatus(null);
 
     if (!token) {
-      alert("You must be logged in to book an appointment.");
+      setApiMessage("You must be logged in to book an appointment.");
+      setSubmitStatus("error");
       setIsSubmitting(false);
       return;
     }

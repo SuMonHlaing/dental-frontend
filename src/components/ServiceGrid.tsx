@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 interface Service {
   id: number;
-  title: string;
+  name: string;
   icon: string;
   description: string;
 }
@@ -62,9 +62,9 @@ const ServiceGrid = () => {
               className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200"
             >
               <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-4">
-                <img src={service.icon} alt={service.title} className="h-6 w-6 text-blue-600" /> {/* Assuming the API provides an icon URL */}
+                <img src={service.icon} alt={service.name} className="h-6 w-6 text-blue-600" /> {/* Assuming the API provides an icon URL */}
               </div>
-              <h3 className="text-lg md:text-xl font-semibold mb-2 text-gray-800">{service.title}</h3>
+              <h3 className="text-lg md:text-xl font-semibold mb-2 ">{service.name}</h3>
               <p className="text-gray-600 mb-4">
                 {service.description.length > 80
                   ? `${service.description.slice(0, 80)}...`

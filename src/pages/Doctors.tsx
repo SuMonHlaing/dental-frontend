@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Clock, Award, Calendar } from "lucide-react";
+import { Clock, Award, Calendar, Search } from "lucide-react";
 import BookingModal from "../components/BookingModal";
 
 interface Doctor {
@@ -25,6 +25,7 @@ const Doctors = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState<string | undefined>();
   const [selectedDoctorId, setSelectedDoctorId] = useState<number | null>(null);
+  const [search, setSearch] = useState(""); // <-- Add search state
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -34,7 +35,7 @@ const Doctors = () => {
           throw new Error("Failed to fetch doctors");
         }
         const data = await response.json();
-        setDoctors(data.doctor); // <-- Use "doctor" here (based on your API)
+        setDoctors(data.doctor);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -48,6 +49,11 @@ const Doctors = () => {
 
     fetchDoctors();
   }, []);
+
+  // Filter doctors by search
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   if (isLoading) {
     return (
@@ -85,10 +91,31 @@ const Doctors = () => {
         </div>
       </div>
 
+      {/* Search input */}
+      <div className="max-w-7xl mx-auto px-4 mt-8 mb-4 flex justify-center">
+        <div className="relative w-full max-w-md">
+          <input
+            type="text"
+            placeholder="Search doctors by name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-4 py-2 pl-10"
+          />
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <Search className="h-5 w-5" />
+          </span>
+        </div>
+      </div>
+
       {/* Doctors Grid */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 py-12 ">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {doctors.map((doctor) => (
+          {filteredDoctors.length === 0 && (
+            <div className="col-span-full text-center text-gray-500">
+              No doctors found.
+            </div>
+          )} 
+          {filteredDoctors.map((doctor) => (
             <div
               key={doctor.id}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
