@@ -49,7 +49,7 @@ const Profile = () => {
                 <Calendar className="h-6 w-6 text-blue-600" />
                 <h2 className="text-2xl font-semibold text-gray-800">Your Appointments</h2>
               </div>
-              <AppointmentHistory doctorId={0} /> {/* Pass 0 to show all appointments */}
+              <AppointmentHistory  /> {/* Pass 0 to show all appointments */}
             </div>
           </div>
         </div>

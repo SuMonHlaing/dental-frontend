@@ -17,6 +17,7 @@ interface Doctor {
   appointments_count: number;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const DoctorDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [doctor, setDoctor] = useState<Doctor | null>(null);
@@ -27,7 +28,7 @@ const DoctorDetail = () => {
   useEffect(() => {
     const fetchDoctorDetails = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/doctors/${id}`);
+        const response = await fetch(`${API_BASE_URL}/doctors/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch doctor details");
         }

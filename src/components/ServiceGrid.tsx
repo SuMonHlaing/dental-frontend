@@ -7,6 +7,8 @@ interface Service {
   description: string;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ServiceGrid = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +17,7 @@ const ServiceGrid = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/popular/services");
+        const response = await fetch(`${API_BASE_URL}/popular/services`);
         if (!response.ok) {
           throw new Error("Failed to fetch services");
         }

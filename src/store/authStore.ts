@@ -27,8 +27,9 @@ const useAuthStore = create<AuthState>()(
       setUser: (user, token) => set({ user, token, isAuthenticated: !!user }),
 
       login: async (email: string, password: string) => {
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
         try {
-          const response = await fetch("http://127.0.0.1:8000/api/login", {
+          const response = await fetch(`${API_BASE_URL}/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -54,8 +55,9 @@ const useAuthStore = create<AuthState>()(
       },
 
       register: async (name: string, email: string, password: string) => {
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
         try {
-          const response = await fetch("http://127.0.0.1:8000/api/register", {
+          const response = await fetch(`${API_BASE_URL}/register`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

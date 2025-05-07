@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Clock, Award, Calendar, Search } from "lucide-react";
 import BookingModal from "../components/BookingModal";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 interface Doctor {
   id: number;
   name: string;
@@ -30,7 +31,7 @@ const Doctors = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/doctors");
+        const response = await fetch(`${API_BASE_URL}/doctors`);
         if (!response.ok) {
           throw new Error("Failed to fetch doctors");
         }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import BookingModal from "../components/BookingModal";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 interface Doctor {
   id: number;
   name: string;
@@ -36,7 +37,7 @@ const ServiceDetail = () => {
     const fetchServiceDetails = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/services/${id}`
+          `${API_BASE_URL}/services/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch service details");

@@ -13,6 +13,7 @@ interface Appointment {
   notes: string;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const AppointmentHistory: React.FC = () => {
   const { token } = useAuthStore(); // Get the user token from auth store
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -23,7 +24,7 @@ const AppointmentHistory: React.FC = () => {
     const fetchAppointments = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:8000/api/appointments/list",
+          `${API_BASE_URL}/appointments/list`,
           {
             method: "GET",
             headers: {

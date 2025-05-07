@@ -10,6 +10,8 @@ interface Doctor {
   appointments_count: number;
 }
 
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const DoctorList = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +23,7 @@ const DoctorList = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/popular/doctors");
+        const response = await fetch(`${API_BASE_URL}/popular/doctors`);
         if (!response.ok) {
           throw new Error("Failed to fetch popular doctors");
         }

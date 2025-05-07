@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react"; // Add this import at the top with your other imports
+import { Search } from "lucide-react";
 
 interface Service {
   id: number;
@@ -8,23 +8,23 @@ interface Service {
   description: string;
   icon: string;
 }
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Services = () => {
   const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [search, setSearch] = useState(""); // <-- Add search state
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/services");
+        const response = await fetch(`${API_BASE_URL}/services`);
         if (!response.ok) {
           throw new Error("Failed to fetch services");
         }
         const data = await response.json();
-        setServices(data.data); // Update state with the fetched services
+        setServices(data.data);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
