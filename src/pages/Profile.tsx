@@ -33,10 +33,10 @@ const Profile = () => {
                     <Mail className="h-5 w-5" />
                     <span>{user.email}</span>
                   </div>
-                  <div className="flex items-center space-x-2 text-gray-600">
+                  {/* <div className="flex items-center space-x-2 text-gray-600">
                     <Phone className="h-5 w-5" />
                     <span>+1 (555) 123-4567</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

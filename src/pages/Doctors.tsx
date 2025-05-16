@@ -18,6 +18,29 @@ interface Doctor {
   appointments_count: number;
 }
 
+// Add this above your Doctors component in Doctors.tsx or as a separate component
+const ShimmerLoader = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {[...Array(6)].map((_, i) => (
+      <div
+        key={i}
+        className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse"
+      >
+        <div className="h-64 bg-gray-200" />
+        <div className="p-6">
+          <div className="h-6 bg-gray-200 rounded w-1/2 mb-4" />
+          <div className="h-4 bg-gray-200 rounded w-1/3 mb-2" />
+          <div className="h-4 bg-gray-200 rounded w-1/4 mb-2" />
+          <div className="flex space-x-4 mt-4">
+            <div className="h-10 bg-gray-200 rounded w-1/2" />
+            <div className="h-10 bg-gray-200 rounded w-1/2" />
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 const Doctors = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -56,22 +79,6 @@ const Doctors = () => {
     doctor.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (isLoading) {
-    return (
-      <div className="pt-16 bg-gray-50 flex justify-center items-center h-screen">
-        <p>Loading doctors...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="pt-16 bg-gray-50 flex justify-center items-center h-screen">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="pt-16 bg-gray-50">
       {/* Hero Section */}
@@ -108,77 +115,109 @@ const Doctors = () => {
         </div>
       </div>
 
-      {/* Doctors Grid */}
-      <div className="max-w-7xl mx-auto px-4 py-12 ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredDoctors.length === 0 && (
-            <div className="col-span-full text-center text-gray-500">
-              No doctors found.
-            </div>
-          )} 
-          {filteredDoctors.map((doctor) => (
-            <div
-              key={doctor.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+      {/* Doctors Grid or Loader/Error */}
+      <div className="max-w-7xl mx-auto px-4 py-12 min-h-[300px]">
+        {isLoading ? (
+          <>
+            <ShimmerLoader />
+            <p className="mt-4 text-gray-400 text-center">Loading doctors...</p>
+          </>
+        ) : error || doctors.length === 0 ? (
+          <div className="flex flex-col items-center justify-center">
+            <img
+              src="https://www.svgrepo.com/show/327388/error.svg"
+              alt="No connection"
+              className="w-40 h-40 mb-6 opacity-70"
+            />
+            <h2 className="text-2xl font-semibold text-gray-700 mb-2">
+              Unable to connect to the server
+            </h2>
+            <p className="text-gray-500 mb-4">
+              Please check your internet connection or try again later.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
             >
-              <div
-                className="relative h-64 cursor-pointer"
-                onClick={() => navigate(`/doctors/${doctor.id}`)}
-              >
-                <img
-                  src={doctor.image}
-                  alt={doctor.name}
-                  className="w-full h-full object-cover rounded-t-lg"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                  <h3 className="text-xl font-semibold text-white">
-                    {doctor.name}
-                  </h3>
-                  <p className="text-blue-100">{doctor.certifications}</p>
-                </div>
+              Retry
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredDoctors.length === 0 ? (
+              <div className="col-span-full text-center text-gray-500">
+                No doctors found.
               </div>
-
-              <div className="p-6">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Clock className="h-5 w-5 text-gray-400" />
-                  <span className="text-gray-600">{doctor.experience}</span>
-                </div>
-
-                <div className="flex items-center space-x-2 mb-4">
-                  <Award className="h-5 w-5 text-gray-400" />
-                  <span className="text-gray-600">{doctor.certifications}</span>
-                </div>
-
-                <div className="flex items-center space-x-2 mb-4">
-                  <Calendar className="h-5 w-5 text-gray-400" />
-                  <span className="text-gray-600">{doctor.working_hours}</span>
-                </div>
-
-                <div className="flex space-x-4">
-                  {/* View Profile Button */}
-                  <button
+            ) : (
+              filteredDoctors.map((doctor) => (
+                <div
+                  key={doctor.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+                >
+                  <div
+                    className="relative h-64 cursor-pointer"
                     onClick={() => navigate(`/doctors/${doctor.id}`)}
-                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition duration-200"
                   >
-                    View Profile
-                  </button>
+                    <img
+                      src={doctor.image}
+                      alt={doctor.name}
+                      className="w-full h-full object-cover rounded-t-lg"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                      <h3 className="text-xl font-semibold text-white">
+                        {doctor.name}
+                      </h3>
+                      <p className="text-blue-100">{doctor.certifications}</p>
+                    </div>
+                  </div>
 
-                  {/* Book Now Button */}
-                  <button
-                    onClick={() => {
-                      setSelectedDoctor(doctor.name);
-                      setSelectedDoctorId(doctor.id);
-                      setIsBookingOpen(true);
-                    }}
-                    className="flex-1 px-4 py-2 rounded-md transition duration-200 bg-blue-600 text-white hover:bg-blue-700"
-                  >
-                    Book Now
-                  </button>
+                  <div className="p-6">
+                    <div className="flex items-center space-x-2 mb-4">
+                      <Clock className="h-5 w-5 text-gray-400" />
+                      <span className="text-gray-600">{doctor.experience}</span>
+                    </div>
+
+                    <div className="flex items-center space-x-2 mb-4">
+                      <Award className="h-5 w-5 text-gray-400" />
+                      <span className="text-gray-600">
+                        {doctor.certifications}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center space-x-2 mb-4">
+                      <Calendar className="h-5 w-5 text-gray-400" />
+                      <span className="text-gray-600">
+                        {doctor.working_hours}
+                      </span>
+                    </div>
+
+                    <div className="flex space-x-4">
+                      {/* View Profile Button */}
+                      <button
+                        onClick={() => navigate(`/doctors/${doctor.id}`)}
+                        className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition duration-200"
+                      >
+                        View Profile
+                      </button>
+
+                      {/* Book Now Button */}
+                      <button
+                        onClick={() => {
+                          setSelectedDoctor(doctor.name);
+                          setSelectedDoctorId(doctor.id);
+                          setIsBookingOpen(true);
+                        }}
+                        className="flex-1 px-4 py-2 rounded-md transition duration-200 bg-blue-600 text-white hover:bg-blue-700"
+                      >
+                        Book Now
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
 
       {/* Booking Modal */}
