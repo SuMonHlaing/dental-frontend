@@ -2,12 +2,15 @@
   "name": "dental-clinic-website",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://sumonhlaing.github.io/dental-frontend",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -42,6 +45,7 @@
     "eslint": "^9.9.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.11",
+    "gh-pages": "^6.3.0",
     "globals": "^15.9.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",

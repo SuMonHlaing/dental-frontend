@@ -18,7 +18,7 @@ function App() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return (
-    <Router>
+    <Router basename="/dental-frontend">
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow">
